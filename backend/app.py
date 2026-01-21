@@ -12,29 +12,25 @@ from pathlib import Path
 
 app = FastAPI(title="Mock Interview API")
 
-# CORS configuration for Chrome extension
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow Chrome extension
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Create audio directory if it doesn't exist
 AUDIO_DIR = Path("audio")
 AUDIO_DIR.mkdir(exist_ok=True)
 
-# Mount static files for audio playback
 app.mount("/audio", StaticFiles(directory="audio"), name="audio")
 
-# In-memory session storage
 sessions: Dict[str, List[Dict]] = {}
 
 # Configuration
 OLLAMA_API_URL = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "llama3.2:latest"  # Using llama3.2 as it's more commonly available
-PIPER_VOICE_MODEL = "en_US-lessac-medium"  # Default Piper voice
+OLLAMA_MODEL = "llama3.2:latest"
+PIPER_VOICE_MODEL = "en_US-lessac-medium"
 
 class Message(BaseModel):
     role: str
@@ -50,7 +46,6 @@ class FeedbackRequest(BaseModel):
 
 
 async def call_ollama(messages: List[Dict]) -> str:
-    """Call Ollama API to get AI response"""
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             # Convert messages to Ollama format
