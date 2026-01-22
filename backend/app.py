@@ -30,7 +30,7 @@ sessions: Dict[str, List[Dict]] = {}
 # Configuration
 OLLAMA_API_URL = "http://localhost:11434/api/chat"
 OLLAMA_MODEL = "llama3.2:latest"
-PIPER_VOICE_MODEL = "en_US-lessac-medium"
+PIPER_VOICE_MODEL_PATH = "voices/en_US-lessac-medium"
 
 class Message(BaseModel):
     role: str
@@ -43,7 +43,6 @@ class ChatRequest(BaseModel):
 class FeedbackRequest(BaseModel):
     messages: List[Message]
     session_id: str
-
 
 async def call_ollama(messages: List[Dict]) -> str:
     try:
@@ -99,7 +98,7 @@ async def generate_tts(text: str, session_id: str) -> str:
             # Run Piper TTS command
             # Command: echo "text" | piper --model <model> --output_file <file>
             process = await asyncio.create_subprocess_shell(
-                f'echo "{sanitized_text}" | piper --model {PIPER_VOICE_MODEL} --output_file "{output_file}"',
+                f'echo "{sanitized_text}" | piper --model {PIPER_VOICE_MODEL_PATH} --output_file "{output_file}"',
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )

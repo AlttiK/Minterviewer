@@ -18,6 +18,24 @@ import sys
 import subprocess
 from pathlib import Path
 
+def find_voice_model(model_name: str = "en_US-lessac-medium"):
+    """
+    Find voice model in various locations
+    
+    Returns: Full path to model (without .onnx extension) or model name
+    """
+    # Location 1: Local voices directory (backend/voices/)
+    script_dir = Path(__file__).parent
+    local_voice = script_dir / "voices" / f"{model_name}.onnx"
+    
+    if local_voice.exists():
+        print(f"Found voice in local directory: {local_voice}")
+        # Return without .onnx extension (piper adds it automatically)
+        return str(local_voice.with_suffix(''))
+    
+    # Fallback: return model name and hope piper finds it
+    print(f"Voice not found locally, using model name: {model_name}")
+    return model_name
 
 def generate_speech(text: str, output_file: str = "output.wav", model: str = "en_US-lessac-medium"):
     """
@@ -30,8 +48,9 @@ def generate_speech(text: str, output_file: str = "output.wav", model: str = "en
     """
     try:
         # Create command
+        model_path = find_voice_model(model)
         # Piper expects: echo "text" | piper --model <model> --output_file <file>
-        cmd = f'echo "{text}" | piper --model {model} --output_file {output_file}'
+        cmd = f'echo "{text}" | piper --model {model_path} --output_file {output_file}'
         
         # Execute
         result = subprocess.run(
