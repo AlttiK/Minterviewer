@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Interview Side Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <h1>🎯 Mock Interview</h1>
+        <div class="status" id="status">
+          <span class="status-dot"></span>
+          <span class="status-text">Ready</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-container" id="chatContainer">
+      <div class="welcome-message">
+        <h2>Welcome to Your Mock Interview! 👋</h2>
+      </div>
+    </div>
+
+    <div class="input-container hidden" id="inputContainer">
+      <div class="input-wrapper">
+        <textarea 
+          id="userInput" 
+          placeholder="Type your response..."
+          rows="3"
+        ></textarea>
+        <div class="input-actions">
+          <button id="sendBtn" class="btn btn-send" title="Send message (Enter)">
+            <span class="btn-icon">↑</span>
+            Send
+          </button>
+        </div>
+      </div>
+      <button id="endBtn" class="btn btn-danger">
+        <span class="btn-icon">■</span>
+        End Interview
+      </button>
+    </div>
+
+    <div class="timer hidden" id="timer">
+      <span class="timer-icon">⏱️</span>
+      <span id="timerDisplay">00:00</span>
+    </div>
+  </div>
+  
+  <script src="sidepanel.js"></script>
+</body>
+</html>

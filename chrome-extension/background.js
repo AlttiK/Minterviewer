@@ -162,16 +162,48 @@ chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === "random_problem") {
     chrome.storage.local.get("leetcodeProblems", ({ leetcodeProblems }) => {
       const problem = leetcodeProblems[Math.floor(Math.random() * leetcodeProblems.length)];
-      chrome.tabs.create({ url: `https://leetcode.com/problems/${problem}/` });
+      chrome.tabs.create({ url: `https://leetcode.com/problems/${problem}/` }, async (tab) => {
+
+        chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
+          if (info.status === 'complete' && tabId === tab.id) {
+            chrome.tabs.onUpdated.removeListener(listener);
+            chrome.sidePanel.open({ tabId: tab.id }).catch(err => {
+              console.log('Side panel open error (expected on first load):', err);
+            });
+          }
+        });
+      });
     });
   }
 });
 
-chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
-    if (changeInfo.status == "complete" && tab.url && tab.url.includes("leetcode.com")) {
-        chrome.scripting.executeScript({
-            target: { tabId: tabID },
-            files: ["content.js"]
-        });
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if(!tab.url) return;
+  const url = new URL(tab.url);
+  console.log('Tab updated:', tabId, changeInfo, tab.url);
+  
+  if (url.hostname === 'leetcode.com') {
+    await chrome.sidePanel.setOptions({
+      tabId: tabId,
+      path: 'sidepanel.html',
+      enabled: true
+    });
+    if (changeInfo.status === 'complete') {
+      chrome.storage.local.get('interviewState', async ({ interviewState }) => {
+        if (interviewState && interviewState.interviewActive) {
+          try {
+            await chrome.sidePanel.open({ tabId: tabId });
+            console.log('Side panel opened for active interview');
+          } catch (e) {
+            console.log('Side panel already open or error:', e);
+          }
+        }
+      });
     }
+  } else {
+    await chrome.sidePanel.setOptions({
+      tabId: tabId,
+      enabled: false
+    });
+  }
 });

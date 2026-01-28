@@ -2,6 +2,7 @@ const API_BASE_URL = 'http://localhost:8000';
 
 let sessionId = null;
 let messages = [];
+let interviewActive = false;
 
 const settingsDiv = document.getElementById('settings');
 const startBtn = document.getElementById('startBtn');
@@ -10,6 +11,9 @@ const inputContainer = document.getElementById('inputContainer');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const endBtn = document.getElementById('endBtn');
+
+// Load saved state on popup open
+loadInterviewState();
 
 startBtn.addEventListener('click', startInterview);
 sendBtn.addEventListener('click', sendMessage);
@@ -20,6 +24,52 @@ userInput.addEventListener('keydown', (e) => {
     sendMessage();
   }
 });
+
+// Function to save interview state
+async function saveInterviewState() {
+  const state = {
+    sessionId,
+    messages,
+    interviewActive,
+    timestamp: Date.now()
+  };
+  await chrome.storage.local.set({ interviewState: state });
+}
+
+// Function to load interview state
+async function loadInterviewState() {
+  try {
+    const result = await chrome.storage.local.get('interviewState');
+    if (result.interviewState && result.interviewState.interviewActive) {
+      const state = result.interviewState;
+      sessionId = state.sessionId;
+      messages = state.messages || [];
+      interviewActive = state.interviewActive;
+      
+      // Restore UI state
+      settingsDiv.classList.add('hidden');
+      inputContainer.classList.remove('hidden');
+      
+      // Redisplay all messages
+      chatContainer.innerHTML = '';
+      messages.forEach(msg => {
+        if (msg.role !== 'system') {
+          displayMessage(msg.role, msg.content);
+        }
+      });
+      
+      // Focus on input
+      userInput.focus();
+    }
+  } catch (error) {
+    console.error('Error loading interview state:', error);
+  }
+}
+
+// Function to clear interview state
+async function clearInterviewState() {
+  await chrome.storage.local.remove('interviewState');
+}
 
 async function startInterview() {
   const interviewType = document.getElementById('interviewType').value;
@@ -36,13 +86,13 @@ async function startInterview() {
     const systemMessage = {
       role: 'system',
       content: `You are a technical interviewer for a SWE Intern position. Conduct a LeetCode-style DSA interview. Follow these rules:
-1. Ask ONE question at a time
-2. Wait for the candidate's approach before giving hints
-3. Ask clarifying questions to understand their thought process
-4. If they're stuck, provide small hints (not full solutions)
-5. Track their problem-solving approach for end-of-session feedback
-6. Be encouraging but professional
-7. Start by introducing yourself and asking the first question`
+                1. Ask ONE question at a time
+                2. Wait for the candidate's approach before giving hints
+                3. Ask clarifying questions to understand their thought process
+                4. If they're stuck, provide small hints (not full solutions)
+                5. Track their problem-solving approach for end-of-session feedback
+                6. Be encouraging but professional
+                7. Start by introducing yourself and asking the first question`
     };
 
     messages = [systemMessage];
@@ -79,6 +129,10 @@ async function startInterview() {
     // Show chat interface
     settingsDiv.classList.add('hidden');
     inputContainer.classList.remove('hidden');
+    
+    // Mark interview as active and save state
+    interviewActive = true;
+    await saveInterviewState();
 
   } catch (error) {
     console.error('Error starting interview:', error);
@@ -146,6 +200,9 @@ async function sendMessage() {
 
     // Display the response
     displayMessage('assistant', data.message, data.audio_url);
+    
+    // Save updated state
+    await saveInterviewState();
 
   } catch (error) {
     console.error('Error sending message:', error);
@@ -239,6 +296,10 @@ function displayFeedback(feedback) {
   chatContainer.appendChild(feedbackDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
+  // Clear interview state
+  interviewActive = false;
+  clearInterviewState();
+  
   // Show reset button
   const resetBtn = document.createElement('button');
   resetBtn.textContent = 'Start New Interview';
@@ -252,7 +313,8 @@ function displayFeedback(feedback) {
   resetBtn.style.fontSize = '14px';
   resetBtn.style.fontWeight = '500';
   resetBtn.style.cursor = 'pointer';
-  resetBtn.addEventListener('click', () => {
+  resetBtn.addEventListener('click', async () => {
+    await clearInterviewState();
     location.reload();
   });
   
