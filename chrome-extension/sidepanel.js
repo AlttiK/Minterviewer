@@ -100,12 +100,13 @@ async function startInterview() {
           role: 'system',
           content: `You are a technical interviewer for a SWE Intern position. Conduct a LeetCode-style DSA interview. Follow these rules:
                     1. Ask ONE question at a time
-                    2. Wait for the candidate's approach before giving hints
-                    3. Ask clarifying questions to understand their thought process
-                    4. If they're stuck, provide small hints (not full solutions)
-                    5. Track their problem-solving approach for end-of-session feedback
-                    6. Be encouraging but professional
-                    7. Start by introducing yourself and explaining the problem statement:
+                    2. Keep responses concise (under 150 words)
+                    3. Wait for the candidate's approach before giving hints
+                    4. Ask clarifying questions to understand their thought process
+                    5. If they're stuck, provide small hints (not full solutions)
+                    6. Track their problem-solving approach for end-of-session feedback
+                    7. Be encouraging but professional
+                    8. Start by introducing yourself and explaining the problem statement:
                     ${leetcodeProblemDescription}`
         };
 
@@ -153,7 +154,7 @@ async function startInterview() {
     console.error('Error starting interview:', error);
     displayMessage('system', `Error: Could not connect to backend. Make sure FastAPI server is running on ${API_BASE_URL}`);
     startBtn.disabled = false;
-    startBtn.innerHTML = '<span class="btn-icon">▶</span> Start Interview';
+    startBtn.innerHTML = '<span class="btn-icon"></span> Return to Home Page';
   }
 }
 

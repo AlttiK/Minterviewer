@@ -193,7 +193,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       });
       
       if (result) {
-        console.log('Problem Description extracted:', result.substring(0, 100) + '...');
+        console.log('Problem Description extracted:', result);
         // Save to storage for side panel to access
         await chrome.storage.local.set({ problemDescription: result });
       }
