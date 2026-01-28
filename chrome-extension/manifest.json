@@ -7,15 +7,11 @@
     "storage",
     "tabs",
     "activeTab",
-    "sidePanel"
+    "sidePanel",
+    "scripting"
   ],
   "side_panel": {
-    "default_path": "sidepanel.html",
-    "default_icon": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
-    }
+    "default_path": "sidepanel.html"
   },
   "host_permissions": [
     "*://leetcode.com/*",

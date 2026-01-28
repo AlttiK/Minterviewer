@@ -84,6 +84,63 @@ body {
   color: white;
 }
 
+/* Settings Styles */
+.settings {
+  padding: 20px;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-content label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settings-content select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.settings-content select:hover {
+  border-color: var(--primary-color);
+}
+
+.settings-content select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+.hint-text {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #5f6368;
+  text-align: center;
+}
+
 /* Button Styles */
 .btn {
   display: inline-flex;
@@ -118,6 +175,16 @@ body {
 .btn-icon {
   font-size: 16px;
   line-height: 1;
+}
+
+.btn-primary {
+  width: 100%;
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #3367d6;
 }
 
 .btn-send {
@@ -179,6 +246,49 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.welcome-message > p {
+  font-size: 14px;
+  color: #5f6368;
+  margin-bottom: 24px;
+}
+
+.tips {
+  background: var(--bg-white);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  margin-top: 24px;
+}
+
+.tips h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.tips li {
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.tips li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
 
 .welcome-message h2 {
   font-size: 24px;
@@ -250,6 +360,106 @@ body {
 /* Utility Classes */
 .hidden {
   display: none !important;
+}
+
+/* Message Styles */
+.message {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  animation: messageSlide 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  max-width: 90%;
+}
+
+@keyframes messageSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.assistant {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid var(--primary-color);
+  margin-right: auto;
+}
+
+.message.user {
+  background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+  border-left: 4px solid #5f6368;
+  margin-left: auto;
+}
+
+.message.system {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+  border-left: 4px solid #fbbc04;
+  font-style: italic;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* Audio Player */
+.audio-player {
+  margin-top: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+}
+
+.audio-player audio {
+  width: 100%;
+  height: 36px;
+  border-radius: 4px;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 16px;
+  color: #5f6368;
+  font-size: 13px;
+  font-style: italic;
+  animation: pulse 1.5s infinite;
+}
+
+/* Feedback */
+.feedback {
+  padding: 20px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 2px solid var(--success-color);
+  border-radius: 12px;
+  margin: 16px 0;
+  font-size: 14px;
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.5s ease;
+}
+
+.feedback h3 {
+  color: #1b5e20;
+  margin-bottom: 12px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feedback p {
+  margin-bottom: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.feedback strong {
+  color: #2e7d32;
+  display: block;
+  margin-bottom: 4px;
 }
 
 /* Responsive adjustments */

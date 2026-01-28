@@ -158,52 +158,47 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ leetcodeProblems });
 });
 
-chrome.runtime.onMessage.addListener((msg) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "random_problem") {
     chrome.storage.local.get("leetcodeProblems", ({ leetcodeProblems }) => {
       const problem = leetcodeProblems[Math.floor(Math.random() * leetcodeProblems.length)];
-      chrome.tabs.create({ url: `https://leetcode.com/problems/${problem}/` }, async (tab) => {
-
-        chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
-          if (info.status === 'complete' && tabId === tab.id) {
-            chrome.tabs.onUpdated.removeListener(listener);
-            chrome.sidePanel.open({ tabId: tab.id }).catch(err => {
-              console.log('Side panel open error (expected on first load):', err);
-            });
-          }
-        });
+      chrome.tabs.create({ url: `https://leetcode.com/problems/${problem}/` }, (tab) => {
+        sendResponse({ tabId: tab.id });
       });
     });
+    return true;
   }
 });
 
+
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  if(!tab.url) return;
-  const url = new URL(tab.url);
-  console.log('Tab updated:', tabId, changeInfo, tab.url);
+  if (!tab.url) return;
   
-  if (url.hostname === 'leetcode.com') {
-    await chrome.sidePanel.setOptions({
-      tabId: tabId,
-      path: 'sidepanel.html',
-      enabled: true
-    });
-    if (changeInfo.status === 'complete') {
-      chrome.storage.local.get('interviewState', async ({ interviewState }) => {
-        if (interviewState && interviewState.interviewActive) {
-          try {
-            await chrome.sidePanel.open({ tabId: tabId });
-            console.log('Side panel opened for active interview');
-          } catch (e) {
-            console.log('Side panel already open or error:', e);
+  // Only process LeetCode problem pages that have finished loading
+  if (tab.url.includes('leetcode.com/problems/') && changeInfo.status === 'complete') {
+    try {
+      // Extract problem description from the page
+      const [{ result }] = await chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        func: () => {
+          const descElement = document.querySelector('.elfjS');
+          if (descElement) {
+            const paragraphs = descElement.querySelectorAll('p');
+            const description = Array.from(paragraphs).map(p => p.innerText).join('\n');
+            console.log('Extracted Problem Description:', description);
+            return description;
           }
+          return null;
         }
       });
+      
+      if (result) {
+        console.log('Problem Description extracted:', result.substring(0, 100) + '...');
+        // Save to storage for side panel to access
+        await chrome.storage.local.set({ problemDescription: result });
+      }
+    } catch (e) {
+      console.log('Error extracting problem description:', e);
     }
-  } else {
-    await chrome.sidePanel.setOptions({
-      tabId: tabId,
-      enabled: false
-    });
   }
 });

@@ -18,9 +18,44 @@
       </div>
     </div>
 
+    <div class="settings" id="settings">
+      <div class="settings-content">
+        <label for="interviewType">Interview Type</label>
+        <select id="interviewType">
+          <option value="swe-intern">SWE Intern</option>
+          <option value="swe-new-grad">SWE New Grad</option>
+          <option value="swe-mid">Mid-Level SWE</option>
+        </select>
+
+        <label for="questionType">Question Type</label>
+        <select id="questionType">
+          <option value="leetcode">LeetCode Style</option>
+          <option value="system-design">System Design</option>
+          <option value="behavioral">Behavioral</option>
+        </select>
+
+        <button id="startBtn" class="btn btn-primary">
+          <span class="btn-icon">▶</span>
+          Start Interview
+        </button>
+        
+        <p class="hint-text">💡 Interview will open a random LeetCode problem</p>
+      </div>
+    </div>
+
     <div class="chat-container" id="chatContainer">
       <div class="welcome-message">
         <h2>Welcome to Your Mock Interview! 👋</h2>
+        <p>Configure your interview settings above and click "Start Interview" to begin.</p>
+        <div class="tips">
+          <h3>💡 Tips:</h3>
+          <ul>
+            <li>Think out loud - explain your reasoning</li>
+            <li>Ask clarifying questions</li>
+            <li>Don't be afraid to ask for hints</li>
+            <li>Focus on problem-solving approach</li>
+          </ul>
+        </div>
       </div>
     </div>
 
