@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mock Interview Side Panel</title>
+  <title>Minterviewer Side Panel</title>
   <link rel="stylesheet" href="sidepanel.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
       <div class="header-content">
-        <h1>🎯 Mock Interview</h1>
+        <h1>Minterviewer</h1>
         <div class="status" id="status">
           <span class="status-dot"></span>
           <span class="status-text">Ready</span>
@@ -30,8 +30,8 @@
         <label for="questionType">Question Type</label>
         <select id="questionType">
           <option value="leetcode">LeetCode Style</option>
-          <option value="system-design">System Design</option>
-          <option value="behavioral">Behavioral</option>
+          <option value="system-design">System Design (Not Yet Implemented)</option>
+          <option value="behavioral">Behavioral (Not Yet Implemented)</option>
         </select>
 
         <button id="startBtn" class="btn btn-primary">
@@ -39,23 +39,14 @@
           Start Interview
         </button>
         
-        <p class="hint-text">💡 Interview will open a random LeetCode problem</p>
+        <p class="hint-text">Minterviewer will open a random LeetCode 150 problem</p>
       </div>
     </div>
 
     <div class="chat-container" id="chatContainer">
       <div class="welcome-message">
-        <h2>Welcome to Your Mock Interview! 👋</h2>
+        <h2>Welcome to Your Minterviewer Mock Interview! 👋</h2>
         <p>Configure your interview settings above and click "Start Interview" to begin.</p>
-        <div class="tips">
-          <h3>💡 Tips:</h3>
-          <ul>
-            <li>Think out loud - explain your reasoning</li>
-            <li>Ask clarifying questions</li>
-            <li>Don't be afraid to ask for hints</li>
-            <li>Focus on problem-solving approach</li>
-          </ul>
-        </div>
       </div>
     </div>
 
