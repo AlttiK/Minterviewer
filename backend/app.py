@@ -48,7 +48,7 @@ class LeetCodeRequest(BaseModel):
     problem_id: str
     session_id: str
 
-async def call_ollama(messages: List[Dict]) -> str:
+async def msg_ollama(messages: List[Dict]) -> str:
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             # Convert messages to Ollama format
@@ -91,18 +91,15 @@ async def call_ollama(messages: List[Dict]) -> str:
 async def generate_tts(text: str, session_id: str) -> str:
     """Generate TTS audio using Piper"""
     try:
-        # Sanitize text for TTS (remove special characters that might cause issues)
-        sanitized_text = text.replace('"', "'").replace('\n', ' ')
+        cleaned_text = text.replace('"', "'").replace('\n', ' ')
         
-        # Output file path
+        
         output_file = AUDIO_DIR / f"speech_{session_id}_{len(text)}.wav"
         
-        # Check if Piper is available
+        # Change this since using echo is really bad
         try:
-            # Run Piper TTS command
-            # Command: echo "text" | piper --model <model> --output_file <file>
             process = await asyncio.create_subprocess_shell(
-                f'echo "{sanitized_text}" | piper --model {PIPER_VOICE_MODEL_PATH} --output_file "{output_file}"',
+                f'echo "{cleaned_text}" | piper --model {PIPER_VOICE_MODEL_PATH} --output_file "{output_file}"',
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
@@ -165,7 +162,7 @@ async def chat(request: ChatRequest):
         sessions[request.session_id] = [msg.dict() for msg in request.messages]
         
         # Get AI response from Ollama
-        ai_response = await call_ollama(sessions[request.session_id])
+        ai_response = await msg_ollama(sessions[request.session_id])
         
         # Generate TTS audio
         audio_url = await generate_tts(ai_response, request.session_id)
