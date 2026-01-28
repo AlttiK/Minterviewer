@@ -1,4 +1,5 @@
-# Minterviewer Mock Interview Practice - Chrome Extension
+# Minterviewer - Chrome Extension
+### Mock Interview Practice
 
 ## Features
 
