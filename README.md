@@ -243,10 +243,4 @@ Check server health and Ollama connection.
 
 ---
 
-## 📄 License
-
-This project is provided as-is for educational purposes.
-
----
-
 **Happy interviewing!**
