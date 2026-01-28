@@ -3,7 +3,6 @@ const API_BASE_URL = 'http://localhost:8000';
 let sessionId = null;
 let messages = [];
 
-// DOM elements
 const settingsDiv = document.getElementById('settings');
 const startBtn = document.getElementById('startBtn');
 const chatContainer = document.getElementById('chatContainer');
@@ -12,7 +11,6 @@ const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 const endBtn = document.getElementById('endBtn');
 
-// Event listeners
 startBtn.addEventListener('click', startInterview);
 sendBtn.addEventListener('click', sendMessage);
 endBtn.addEventListener('click', endInterview);
@@ -48,6 +46,8 @@ async function startInterview() {
     };
 
     messages = [systemMessage];
+
+    chrome.runtime.sendMessage({ type: "random_problem" });
 
     // Get first question from AI
     const response = await fetch(`${API_BASE_URL}/chat`, {

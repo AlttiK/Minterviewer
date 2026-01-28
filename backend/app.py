@@ -44,6 +44,10 @@ class FeedbackRequest(BaseModel):
     messages: List[Message]
     session_id: str
 
+class LeetCodeRequest(BaseModel):
+    problem_id: str
+    session_id: str
+
 async def call_ollama(messages: List[Dict]) -> str:
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
