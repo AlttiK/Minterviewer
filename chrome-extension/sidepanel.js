@@ -55,8 +55,8 @@ async function loadInterviewState() {
         // Clear welcome message and redisplay all messages
         chatContainer.innerHTML = '';
         messages.forEach(msg => {
-            if (msg.role !== 'system') {
-            displayMessage(msg.role, msg.content);
+            if (msg.role !== 'system' && msg.content !== `Let's begin the interview. Start by introducing yourself and explaining the problem statement.`) {
+                displayMessage(msg.role, msg.content);
             }
         });
         
@@ -100,17 +100,22 @@ async function startInterview() {
           role: 'system',
           content: `You are a technical interviewer for a SWE Intern position. Conduct a LeetCode-style DSA interview. Follow these rules:
                     1. Ask ONE question at a time
-                    2. Keep responses concise (under 150 words)
+                    2. Keep responses concise (under 100 words) unless your introducing yourself
                     3. Wait for the candidate's approach before giving hints
                     4. Ask clarifying questions to understand their thought process
                     5. If they're stuck, provide small hints (not full solutions)
                     6. Track their problem-solving approach for end-of-session feedback
-                    7. Be encouraging but professional
+                    7. Be encouraging but professional and pick a random personality
                     8. Start by introducing yourself and explaining the problem statement:
                     ${leetcodeProblemDescription}`
         };
 
-        messages = [systemMessage];
+        const initialMessage = {
+          role: 'user',
+            content: `Let's begin the interview. Start by introducing yourself and explaining the problem statement.`
+        };
+
+        messages = [systemMessage, initialMessage];
 
         // Step 4: Get first question from AI
         const response = await fetch(`${API_BASE_URL}/chat`, {
@@ -320,7 +325,7 @@ function displayFeedback(feedback) {
   
   // Show reset button
   const resetBtn = document.createElement('button');
-  resetBtn.textContent = 'Start New Interview';
+  resetBtn.textContent = 'Return to Home Page';
   resetBtn.style.margin = '16px';
   resetBtn.style.width = 'calc(100% - 32px)';
   resetBtn.style.padding = '10px';
