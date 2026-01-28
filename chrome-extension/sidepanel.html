@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Interview Side Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-content">
+        <h1>🎯 Mock Interview</h1>
+        <div class="status" id="status">
+          <span class="status-dot"></span>
+          <span class="status-text">Ready</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings" id="settings">
+      <div class="settings-content">
+        <label for="interviewType">Interview Type</label>
+        <select id="interviewType">
+          <option value="swe-intern">SWE Intern</option>
+          <option value="swe-new-grad">SWE New Grad</option>
+          <option value="swe-mid">Mid-Level SWE</option>
+        </select>
+
+        <label for="questionType">Question Type</label>
+        <select id="questionType">
+          <option value="leetcode">LeetCode Style</option>
+          <option value="system-design">System Design</option>
+          <option value="behavioral">Behavioral</option>
+        </select>
+
+        <button id="startBtn" class="btn btn-primary">
+          <span class="btn-icon">▶</span>
+          Start Interview
+        </button>
+        
+        <p class="hint-text">💡 Interview will open a random LeetCode problem</p>
+      </div>
+    </div>
+
+    <div class="chat-container" id="chatContainer">
+      <div class="welcome-message">
+        <h2>Welcome to Your Mock Interview! 👋</h2>
+        <p>Configure your interview settings above and click "Start Interview" to begin.</p>
+        <div class="tips">
+          <h3>💡 Tips:</h3>
+          <ul>
+            <li>Think out loud - explain your reasoning</li>
+            <li>Ask clarifying questions</li>
+            <li>Don't be afraid to ask for hints</li>
+            <li>Focus on problem-solving approach</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-container hidden" id="inputContainer">
+      <div class="input-wrapper">
+        <textarea 
+          id="userInput" 
+          placeholder="Type your response..."
+          rows="3"
+        ></textarea>
+        <div class="input-actions">
+          <button id="sendBtn" class="btn btn-send" title="Send message (Enter)">
+            <span class="btn-icon">↑</span>
+            Send
+          </button>
+        </div>
+      </div>
+      <button id="endBtn" class="btn btn-danger">
+        <span class="btn-icon">■</span>
+        End Interview
+      </button>
+    </div>
+
+    <div class="timer hidden" id="timer">
+      <span class="timer-icon">⏱️</span>
+      <span id="timerDisplay">00:00</span>
+    </div>
+  </div>
+  
+  <script src="sidepanel.js"></script>
+</body>
+</html>

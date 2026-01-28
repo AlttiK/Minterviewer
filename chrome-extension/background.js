@@ -158,20 +158,47 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ leetcodeProblems });
 });
 
-chrome.runtime.onMessage.addListener((msg) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "random_problem") {
     chrome.storage.local.get("leetcodeProblems", ({ leetcodeProblems }) => {
       const problem = leetcodeProblems[Math.floor(Math.random() * leetcodeProblems.length)];
-      chrome.tabs.create({ url: `https://leetcode.com/problems/${problem}/` });
+      chrome.tabs.create({ url: `https://leetcode.com/problems/${problem}/` }, (tab) => {
+        sendResponse({ tabId: tab.id });
+      });
     });
+    return true;
   }
 });
 
-chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
-    if (changeInfo.status == "complete" && tab.url && tab.url.includes("leetcode.com")) {
-        chrome.scripting.executeScript({
-            target: { tabId: tabID },
-            files: ["content.js"]
-        });
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  if (!tab.url) return;
+  
+  // Only process LeetCode problem pages that have finished loading
+  if (tab.url.includes('leetcode.com/problems/') && changeInfo.status === 'complete') {
+    try {
+      // Extract problem description from the page
+      const [{ result }] = await chrome.scripting.executeScript({
+        target: { tabId: tabId },
+        func: () => {
+          const descElement = document.querySelector('.elfjS');
+          if (descElement) {
+            const paragraphs = descElement.querySelectorAll('p');
+            const description = Array.from(paragraphs).map(p => p.innerText).join('\n');
+            console.log('Extracted Problem Description:', description);
+            return description;
+          }
+          return null;
+        }
+      });
+      
+      if (result) {
+        console.log('Problem Description extracted:', result.substring(0, 100) + '...');
+        // Save to storage for side panel to access
+        await chrome.storage.local.set({ problemDescription: result });
+      }
+    } catch (e) {
+      console.log('Error extracting problem description:', e);
     }
+  }
 });

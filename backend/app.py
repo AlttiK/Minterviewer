@@ -159,7 +159,7 @@ async def chat(request: ChatRequest):
     """Main chat endpoint"""
     try:
         # Store session messages
-        sessions[request.session_id] = [msg.dict() for msg in request.messages]
+        sessions[request.session_id] = [msg.model_dump() for msg in request.messages]
         
         # Get AI response from Ollama
         ai_response = await msg_ollama(sessions[request.session_id])
@@ -186,7 +186,7 @@ async def get_feedback(request: FeedbackRequest):
     """Generate end-of-session feedback"""
     try:
         # Add feedback request to messages
-        feedback_messages = [msg.dict() for msg in request.messages]
+        feedback_messages = [msg.model_dump() for msg in request.messages]
         feedback_messages.append({
             "role": "user",
             "content": """Please provide interview feedback in the following format:
@@ -201,7 +201,7 @@ Keep it concise and constructive."""
         })
         
         # Get feedback from AI
-        feedback_text = await call_ollama(feedback_messages)
+        feedback_text = await msg_ollama(feedback_messages)
         
         # Parse feedback (simple parsing)
         feedback = {

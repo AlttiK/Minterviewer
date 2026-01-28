@@ -6,8 +6,13 @@
   "permissions": [
     "storage",
     "tabs",
-    "activeTab"
+    "activeTab",
+    "sidePanel",
+    "scripting"
   ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
   "host_permissions": [
     "*://leetcode.com/*",
     "*://*.leetcode.com/*"
