@@ -5,7 +5,9 @@
 }
 
 :root {
-  --primary-color: #4285f4;
+  --primary-color: #5BA64F;
+  --primary-light: #96D15F;
+  --primary-dark: #4a8f3f;
   --success-color: #34a853;
   --success-hover: #2d8e47;
   --danger-color: #ea4335;
@@ -36,7 +38,7 @@ body {
 
 /* Header Styles */
 .header {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #5a9cf8 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
   color: white;
   padding: 16px 20px;
   box-shadow: var(--shadow-md);
@@ -70,7 +72,7 @@ body {
 .status-dot {
   width: 8px;
   height: 8px;
-  background: #34a853;
+  background: #96D15F;
   border-radius: 50%;
   animation: pulse 2s infinite;
 }
@@ -131,7 +133,7 @@ body {
 .settings-content select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+  box-shadow: 0 0 0 3px rgba(91, 166, 79, 0.1);
 }
 
 .hint-text {
@@ -184,17 +186,17 @@ body {
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #3367d6;
+  background: var(--primary-dark);
 }
 
 .btn-send {
   flex: 1;
-  background: var(--success-color);
+  background: var(--primary-color);
   color: white;
 }
 
 .btn-send:hover:not(:disabled) {
-  background: var(--success-hover);
+  background: var(--primary-dark);
 }
 
 .btn-danger {
@@ -285,7 +287,7 @@ body {
   content: "✓";
   position: absolute;
   left: 0;
-  color: var(--success-color);
+  color: var(--primary-color);
   font-weight: bold;
 }
 
@@ -324,7 +326,7 @@ body {
 .input-container textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+  box-shadow: 0 0 0 3px rgba(91, 166, 79, 0.1);
 }
 
 .input-container textarea::placeholder {
@@ -386,7 +388,7 @@ body {
 }
 
 .message.assistant {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  background: linear-gradient(135deg, #e8f5e3 0%, #d4ecc8 100%);
   border-left: 4px solid var(--primary-color);
   margin-right: auto;
 }
@@ -432,8 +434,8 @@ body {
 /* Feedback */
 .feedback {
   padding: 20px;
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-  border: 2px solid var(--success-color);
+  background: linear-gradient(135deg, #e8f5e3 0%, #d4ecc8 100%);
+  border: 2px solid var(--primary-color);
   border-radius: 12px;
   margin: 16px 0;
   font-size: 14px;
@@ -442,7 +444,7 @@ body {
 }
 
 .feedback h3 {
-  color: #1b5e20;
+  color: #3d6b35;
   margin-bottom: 12px;
   font-size: 18px;
   display: flex;
@@ -457,7 +459,7 @@ body {
 }
 
 .feedback strong {
-  color: #2e7d32;
+  color: var(--primary-dark);
   display: block;
   margin-bottom: 4px;
 }

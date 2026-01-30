@@ -16,12 +16,29 @@ body {
     flex-direction: column;
 }
 
-.header {
-    background: #4285f4;
-    color: white;
-    padding: 16px;
-    text-align: center;
+.header-container {
+    background: linear-gradient(135deg, #5BA64F 0%, #96D15F 100%);
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
+
+.header {
+    color: white;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 
 .header h1 {
     font-size: 18px;
@@ -42,7 +59,7 @@ body {
 .launcher button {
     width: 100%;
     padding: 12px;
-    background: #4285f4;
+    background: #5BA64F;
     color: white;
     border: none;
     border-radius: 8px;
@@ -54,7 +71,7 @@ body {
 }
 
 .launcher button:hover {
-    background: #3367d6;
+    background: #4a8f3f;
     transform: translateY(-1px);
     box-shadow: 0 2px 4px 0 rgba(60, 64, 67, 0.3);
 }
