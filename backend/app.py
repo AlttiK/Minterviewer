@@ -189,15 +189,15 @@ async def get_feedback(request: FeedbackRequest):
         feedback_messages = [msg.model_dump() for msg in request.messages]
         feedback_messages.append({
             "role": "user",
-            "content": """Please provide interview feedback in the following format:
+            "content": """Please provide interview feedback in the exact following format:
 
-Strengths: [List 2-3 specific strengths you observed]
+                        Strengths: [List 2-3 specific strengths you observed]
 
-Weaknesses: [List 2-3 areas that need improvement]
+                        Weaknesses: [List 2-3 areas that need improvement]
 
-Actionable Improvement: [Provide ONE specific, actionable recommendation for improvement]
+                        Actionable Improvement: [Provide ONE specific, actionable recommendation for improvement]
 
-Keep it concise and constructive."""
+                        Keep it concise and constructive."""
         })
         
         # Get feedback from AI
