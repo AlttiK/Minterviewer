@@ -36,7 +36,6 @@ async function saveInterviewState() {
   await chrome.storage.local.set({ interviewState: state });
 }
 
-// Function to load interview state
 async function loadInterviewState() {
     try {
         const result = await chrome.storage.local.get('interviewState');
@@ -51,7 +50,6 @@ async function loadInterviewState() {
         settingsDiv.classList.add('hidden');
         inputContainer.classList.remove('hidden');
         
-        // Clear welcome message and redisplay all messages
         chatContainer.innerHTML = '';
         messages.forEach(msg => {
             if (msg.role !== 'system' && msg.content !== `Let's begin the interview. Start by introducing yourself and explaining the problem statement.`) {
@@ -59,7 +57,6 @@ async function loadInterviewState() {
             }
         });
         
-        // Focus on input
         userInput.focus();
         }
     } 
@@ -114,9 +111,10 @@ async function startInterview() {
             content: `Let's begin the interview. Start by introducing yourself and explaining the problem statement.`
         };
 
+        // Step 3.5: Initialize messages in list
         messages = [systemMessage, initialMessage];
 
-        // Step 4: Get first question from AI
+        // Step 4: Get first question from backend
         const response = await fetch(`${API_BASE_URL}/chat`, {
           method: 'POST',
           headers: {
@@ -134,13 +132,12 @@ async function startInterview() {
 
         const data = await response.json();
         
-        // Add assistant message
         messages.push({
           role: 'assistant',
           content: data.message
         });
 
-        // Clear welcome and display first message
+        // Step 4.5: Clear welcome and display first message
         chatContainer.innerHTML = '';
         displayMessage('assistant', data.message, data.audio_url);
 
@@ -166,23 +163,20 @@ async function sendMessage() {
   const message = userInput.value.trim();
   if (!message) return;
 
-  // Disable input
+  // Step 1: Disable input and display user message
   sendBtn.disabled = true;
   userInput.disabled = true;
 
-  // Display user message
   displayMessage('user', message);
 
-  // Add to messages
   messages.push({
     role: 'user',
     content: message
   });
 
-  // Clear input
   userInput.value = '';
 
-  // Show loading
+  // Step 1.5: show loading indicator
   const loadingDiv = document.createElement('div');
   loadingDiv.className = 'loading';
   loadingDiv.id = 'loading';
@@ -190,6 +184,7 @@ async function sendMessage() {
   chatContainer.appendChild(loadingDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
+  // Step 2: Send message to backend
   try {
     const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
@@ -208,20 +203,18 @@ async function sendMessage() {
 
     const data = await response.json();
 
-    // Remove loading
     const loading = document.getElementById('loading');
     if (loading) loading.remove();
 
-    // Add assistant message
+    // Step 3: Add and display assistant response from backend
     messages.push({
       role: 'assistant',
       content: data.message
     });
 
-    // Display the response
     displayMessage('assistant', data.message, data.audio_url);
     
-    // Save updated state
+    // Step 3.5: Save updated state
     await saveInterviewState();
 
   } catch (error) {
@@ -232,7 +225,7 @@ async function sendMessage() {
     
     displayMessage('system', 'Error: Could not get response from AI. Please try again.');
   } finally {
-    // Re-enable input
+    // Step 4: Re-enable send message input
     sendBtn.disabled = false;
     userInput.disabled = false;
     userInput.focus();
@@ -245,7 +238,7 @@ async function endInterview() {
   endBtn.textContent = 'Generating feedback...';
 
   try {
-    // Request feedback
+    // Step 1: Request feedback
     const response = await fetch(`${API_BASE_URL}/feedback`, {
       method: 'POST',
       headers: {
@@ -263,10 +256,10 @@ async function endInterview() {
 
     const data = await response.json();
 
-    // Display feedback
+    // Step 2: Display feedback
     displayFeedback(data.feedback);
 
-    // Hide input
+    // Step 3: Hide input
     inputContainer.classList.add('hidden');
 
   } catch (error) {
@@ -279,6 +272,7 @@ async function endInterview() {
 
 
 function displayMessage(role, content, audioUrl = null) {
+  // Create new message and text div
   const messageDiv = document.createElement('div');
   messageDiv.className = `message ${role}`;
 
@@ -286,7 +280,7 @@ function displayMessage(role, content, audioUrl = null) {
   textDiv.textContent = content;
   messageDiv.appendChild(textDiv);
 
-  // Add audio player if audio URL is provided
+  // create audio div and element
   if (audioUrl) {
     const audioDiv = document.createElement('div');
     audioDiv.className = 'audio-player';
@@ -300,11 +294,13 @@ function displayMessage(role, content, audioUrl = null) {
     messageDiv.appendChild(audioDiv);
   }
 
+  // Append message to chat container and scroll to bottom
   chatContainer.appendChild(messageDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 function displayFeedback(feedback) {
+  // create feedback div
   const feedbackDiv = document.createElement('div');
   feedbackDiv.className = 'feedback';
   
@@ -315,6 +311,7 @@ function displayFeedback(feedback) {
     <p><strong>Actionable Improvement:</strong> ${feedback.improvement || 'N/A'}</p>
   `;
   
+  // Append feedback to chat container and scroll to bottom
   chatContainer.appendChild(feedbackDiv);
   chatContainer.scrollTop = chatContainer.scrollHeight;
 
@@ -324,17 +321,8 @@ function displayFeedback(feedback) {
   
   // Show reset button
   const resetBtn = document.createElement('button');
+  resetBtn.className = 'btn btn-reset';
   resetBtn.textContent = 'Return to Home Page';
-  resetBtn.style.margin = '16px';
-  resetBtn.style.width = 'calc(100% - 32px)';
-  resetBtn.style.padding = '10px';
-  resetBtn.style.background = '#4285f4';
-  resetBtn.style.color = 'white';
-  resetBtn.style.border = 'none';
-  resetBtn.style.borderRadius = '4px';
-  resetBtn.style.fontSize = '14px';
-  resetBtn.style.fontWeight = '500';
-  resetBtn.style.cursor = 'pointer';
   resetBtn.addEventListener('click', async () => {
     await clearInterviewState();
     location.reload();

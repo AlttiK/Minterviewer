@@ -234,6 +234,20 @@ body {
   background: var(--danger-hover);
 }
 
+.btn-reset {
+  margin: 16px;
+  width: calc(100% - 32px);
+  background: linear-gradient(135deg, #5BA64F 0%, #96D15F 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
+  color: white;
+}
+
+.btn-reset:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4a8f3f 0%, #7bc56f 100%);
+  animation: none;
+}
+
 /* Chat Container */
 .chat-container {
   flex: 1;
@@ -278,43 +292,6 @@ body {
   color: #5f6368;
   margin-bottom: 24px;
 }
-
-.tips {
-  background: var(--bg-white);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
-  text-align: left;
-  margin-top: 24px;
-}
-
-.tips h3 {
-  font-size: 16px;
-  margin-bottom: 12px;
-  color: var(--text-primary);
-}
-
-.tips ul {
-  list-style: none;
-  padding: 0;
-}
-
-.tips li {
-  padding: 8px 0;
-  padding-left: 24px;
-  position: relative;
-  font-size: 14px;
-  color: #5f6368;
-}
-
-.tips li::before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: var(--primary-color);
-  font-weight: bold;
-}
-
 
 .welcome-message h2 {
   font-size: 24px;
