@@ -39,12 +39,28 @@ body {
 /* Header Styles */
 .header {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
   color: white;
   padding: 16px 20px;
   box-shadow: var(--shadow-md);
   position: relative;
   z-index: 10;
 }
+
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 
 .header-content {
   display: flex;
@@ -157,6 +173,8 @@ body {
   cursor: pointer;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .btn:hover {
@@ -180,19 +198,24 @@ body {
 }
 
 .btn-primary {
+  background: linear-gradient(135deg, #5BA64F 0%, #96D15F 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
   width: 100%;
-  background: var(--primary-color);
   color: white;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, #4a8f3f 0%, #7bc56f 100%);
+  animation: none;
 }
 
 .btn-send {
   flex: 1;
   background: var(--primary-color);
   color: white;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-send:hover:not(:disabled) {
@@ -204,6 +227,7 @@ body {
   margin-top: 8px;
   background: var(--danger-color);
   color: white;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-danger:hover:not(:disabled) {
