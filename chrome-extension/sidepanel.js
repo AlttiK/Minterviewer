@@ -25,7 +25,6 @@ userInput.addEventListener('keydown', (e) => {
   }
 });
 
-// Function to save interview state
 async function saveInterviewState() {
   const state = {
     sessionId,

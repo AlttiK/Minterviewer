@@ -3,7 +3,7 @@
 
 ## Features
 
-- **Chrome Extension (Manifest V3)**
+- **Chrome Extension**
   - Clean chat-based interview interface
   - Uses random Leetcode problem from Neetcode 150
   - Display AI-generated questions with TTS audio playback
@@ -20,7 +20,7 @@
   - LeetCode-style interview conversation flow
   - Tracks candidate progress for feedback
 
-- **TTS (Text-to-Speech)**
+- **Text To Speech**
   - Local Piper TTS for audio generation
   - AI responses converted to speech
 
@@ -40,8 +40,6 @@
    - Install via pip:
      ```powershell
      pip install piper-tts
-     ```
-   - Or download from: https://github.com/rhasspy/piper/releases
 
 4. **Google Chrome** (for extension)
 
