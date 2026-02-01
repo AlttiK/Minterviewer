@@ -9,6 +9,7 @@ import subprocess
 import os
 import asyncio
 from pathlib import Path
+from kokoro_onnx import Kokoro
 
 app = FastAPI(title="Mock Interview API")
 
@@ -30,7 +31,6 @@ sessions: Dict[str, List[Dict]] = {}
 # Configuration
 OLLAMA_API_URL = "http://localhost:11434/api/chat"
 OLLAMA_MODEL = "llama3.2:latest"
-PIPER_VOICE_MODEL_PATH = "voices/en_US-lessac-medium"
 
 class Message(BaseModel):
     role: str
@@ -88,35 +88,56 @@ async def msg_ollama(messages: List[Dict]) -> str:
         )
 
 
+_kokoro_model = None
+
+def get_kokoro_model():
+    global _kokoro_model
+    if _kokoro_model is None:
+        try:
+            _kokoro_model = Kokoro(
+                "voices/kokoro-v1.0.onnx", 
+                "voices/voices-v1.0.bin"
+            )
+        except Exception as e:
+            print(f"Failed to load Kokoro model: {e}")
+            print("Make sure model files are downloaded to voices/ directory")
+    return _kokoro_model
+
 async def generate_tts(text: str, session_id: str) -> str:
-    """Generate TTS audio using Piper"""
+    """Generate TTS audio using Kokoro"""
     try:
-        cleaned_text = text.replace('"', "'").replace('\n', ' ')
+        model = get_kokoro_model()
+        if model is None:
+            print("Kokoro TTS not available")
+            return None
         
+        cleaned_text = text.replace('\n', ' ').strip()
+        if not cleaned_text:
+            return None
         
         output_file = AUDIO_DIR / f"speech_{session_id}_{len(text)}.wav"
         
-        # Change this since using echo is really bad
-        try:
-            process = await asyncio.create_subprocess_shell(
-                f'echo "{cleaned_text}" | piper --model {PIPER_VOICE_MODEL_PATH} --output_file "{output_file}"',
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
-            )
-            
-            stdout, stderr = await process.communicate()
-            
-            if process.returncode != 0:
-                print(f"Piper TTS error: {stderr.decode()}")
-                return None
-                
-            if output_file.exists():
-                return f"/audio/{output_file.name}"
-            else:
-                return None
-                
-        except FileNotFoundError:
-            print("Piper not found. TTS disabled. Install with: pip install piper-tts")
+        def generate():
+            try:
+                samples, sample_rate = model.create(
+                    cleaned_text,
+                    voice="af_heart",
+                    speed=1.0,
+                    lang="en-us"
+                )
+                import soundfile as sf
+                sf.write(str(output_file), samples, sample_rate)
+                return True
+            except Exception as e:
+                print(f"Kokoro generation error: {e}")
+                return False
+        
+        loop = asyncio.get_event_loop()
+        success = await loop.run_in_executor(None, generate)
+        
+        if success and output_file.exists():
+            return f"/audio/{output_file.name}"
+        else:
             return None
             
     except Exception as e:
@@ -249,6 +270,4 @@ async def get_feedback(request: FeedbackRequest):
 if __name__ == "__main__":
     import uvicorn
     print("Starting Mock Interview API server...")
-    print("Make sure Ollama is running: ollama serve")
-    print(f"Make sure you have the model: ollama pull {OLLAMA_MODEL}")
     uvicorn.run(app, host="0.0.0.0", port=8000)
