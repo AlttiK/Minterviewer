@@ -1,5 +1,5 @@
 # Minterviewer - Chrome Extension
-### Mock Interview Practice
+### Tutor and Mock Interview Practice
 
 ## Features
 
@@ -39,9 +39,10 @@
 3. **Kokoro-onnx TTS**
    - Download a Voice Model (~300 MB):
      ```powershell
+     # adds .onnx model file to backend
      curl -L \
        https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx \
-       -o backend/voices/voice.onnx
+       -o backend/voices/kokoro-v1.0.onnx
 
 4. **Google Chrome** (for extension)
 
@@ -55,7 +56,7 @@
 # Start Ollama service
 ollama serve
 
-# In a new terminal, pull the AI model
+# In a new terminal, pull the AI model (only once)
 ollama pull llama3.2:latest
 
 # Check downloaded models
