@@ -36,10 +36,10 @@
 2. **Ollama** (Local LLM runtime)
    - Download and install: https://ollama.ai/download
 
-3. **Piper TTS**
+3. **Kokoro-onnx TTS**
    - Install via pip:
      ```powershell
-     pip install piper-tts
+     pip install kokoro-onnx
 
 4. **Google Chrome** (for extension)
 
@@ -217,14 +217,14 @@ Check server health and Ollama connection.
 - **Uvicorn** - ASGI server
 - **httpx** - Async HTTP client for Ollama
 - **pydantic** - Data validation
-- **piper-tts** - Text-to-speech
+- **kokoro-onnx** - Text-to-speech
 
 ### Chrome Extension
 - No external dependencies
 
 ### External Services
 - **Ollama** - Local LLM runtime
-- **Piper** - Local TTS
+- **Kokoro** - Local TTS
 
 ---
 
