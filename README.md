@@ -21,7 +21,7 @@
   - Tracks candidate progress for feedback
 
 - **Text To Speech**
-  - Local Piper TTS for audio generation
+  - Local Kokoro-onnx TTS for audio generation
   - AI responses converted to speech
 
 ## Setup Instructions
@@ -37,9 +37,6 @@
    - Download and install: https://ollama.ai/download
 
 3. **Kokoro-onnx TTS**
-   - Install Python package:
-     ```powershell
-     pip install kokoro-onnx
    - Download a Voice Model (~300 MB):
      ```powershell
      curl -L \
@@ -119,14 +116,15 @@ Check health: **http://localhost:8000/health**
    - FastAPI server: `python app.py` (in backend folder)
 
 2. **Open the extension** by clicking the icon in Chrome
+   - Open the side panel to keep extension open
 
-3. **Configure interview**:
+4. **Configure interview**:
    - Interview Type: SWE Intern
    - Question Type: LeetCode-style DSA
 
-4. **Click "Start Interview"**
+5. **Click "Start Interview"**
 
-5. The AI interviewer will:
+6. The AI interviewer will:
    - Introduce itself
    - Open Leetcode
    - Describe the first LeetCode-style question
@@ -137,16 +135,16 @@ Check health: **http://localhost:8000/health**
 - **Type your approach** or solution in the text box
 - **Ask for hints** if you're stuck
 - **Clarify the question** (e.g., "What are the input constraints?")
-- The AI will keep track of all question, code and inputs
+- The AI will keep track of all questions, and inputs (leetcode code parsing coming soon)
 
 ### Ending the Interview
 
 1. Click **"End Interview"** button
 
 2. The AI will generate feedback with:
-   - **Strengths**: What you did well
-   - **Weaknesses**: Areas to improve
-   - **Actionable Improvement**: One specific recommendation
+   - **Strengths**
+   - **Weaknesses**
+   - **Actionable Improvement**
 
 3. Click **"Return to Home Page"** to go back to interview setup
 
@@ -229,7 +227,7 @@ Check server health and Ollama connection.
 
 ### External Services
 - **Ollama** - Local LLM runtime
-- **Kokoro** - Local TTS
+- **Kokoro-onnx** - Local TTS
 
 ---
 
