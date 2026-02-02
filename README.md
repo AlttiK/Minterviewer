@@ -37,9 +37,14 @@
    - Download and install: https://ollama.ai/download
 
 3. **Kokoro-onnx TTS**
-   - Install via pip:
+   - Install Python package:
      ```powershell
      pip install kokoro-onnx
+   - Download a Voice Model (~300 MB):
+     ```powershell
+     curl -L \
+       https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx \
+       -o backend/voices/voice.onnx
 
 4. **Google Chrome** (for extension)
 
@@ -50,14 +55,14 @@
 #### Step 1: Install Ollama and Pull Model
 
 ```powershell
-# Start Ollama service (if not running)
+# Start Ollama service
 ollama serve
 
 # In a new terminal, pull the AI model
 ollama pull llama3.2:latest
 
-# If installed run the model
-ollama run llama3.2:latest
+# Check downloaded models
+ollama list
 ```
 
 #### Step 2: Install Python Dependencies
