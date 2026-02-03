@@ -70,9 +70,6 @@ async function clearInterviewState() {
 }
 
 async function startInterview() {
-  const interviewType = document.getElementById('interviewType').value;
-  const questionType = document.getElementById('questionType').value;
-
   startBtn.disabled = true;
   startBtn.innerHTML = '<span class="btn-icon">⏳</span> Opening LeetCode...';
 
@@ -305,7 +302,7 @@ function displayFeedback(feedback) {
   feedbackDiv.className = 'feedback';
   
   feedbackDiv.innerHTML = `
-    <h3>📊 Interview Feedback</h3>
+    <h3>Interview Feedback</h3>
     <p><strong>Strengths:</strong> ${feedback.strengths || 'N/A'}</p>
     <p><strong>Weaknesses:</strong> ${feedback.weaknesses || 'N/A'}</p>
     <p><strong>Actionable Improvement:</strong> ${feedback.improvement || 'N/A'}</p>

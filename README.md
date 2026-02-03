@@ -24,6 +24,12 @@
   - Local Kokoro-onnx TTS for audio generation
   - AI responses converted to speech
 
+## Current Development
+
+- **Live Kit Integration**
+- **Microphone Input and STT**
+- **General Tutuoring**
+
 ## Setup Instructions
 
 ### Prerequisites
