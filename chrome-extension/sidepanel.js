@@ -156,6 +156,11 @@ async function startInterview() {
   }
 }
 
+// function to include audio detection and transcription
+async function detectAndTranscribeAudio() {
+  
+}
+
 async function sendMessage() {
   const message = userInput.value.trim();
   if (!message) return;
