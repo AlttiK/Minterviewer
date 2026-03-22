@@ -38,8 +38,8 @@ async function saveInterviewState() {
 
 async function loadInterviewState() {
     try {
-        const result = await chrome.storage.local.get('interviewState');
-        if (result.interviewState && result.interviewState.interviewActive) {
+      const result = await chrome.storage.local.get('interviewState');
+      if (result.interviewState && result.interviewState.interviewActive) {
         const state = result.interviewState;
         sessionId = state.sessionId;
         messages = state.messages || [];
@@ -58,7 +58,7 @@ async function loadInterviewState() {
         });
         
         userInput.focus();
-        }
+      }
     } 
     catch (error) {
         console.error('Error loading interview state:', error);

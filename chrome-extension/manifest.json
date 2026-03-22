@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Mock Interview Practice",
-  "version": "0.2.0",
-  "description": "LeetCode-style interview practice for SWE interns with AI interviewer",
+  "name": "Tutor and Mock Interview Practice",
+  "version": "1.0.0",
+  "description": "Tutor for interview practice with an AI interviewer",
   "permissions": [
     "storage",
     "tabs",
