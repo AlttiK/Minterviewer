@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Tutor and Mock Interview Practice",
+  "name": "Minterviewer",
   "version": "1.0.0",
   "description": "Tutor for interview practice with an AI interviewer",
   "permissions": [
